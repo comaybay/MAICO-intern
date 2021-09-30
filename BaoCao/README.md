@@ -67,3 +67,51 @@ Khi làm việc với nhiều người trong cùng một remote repository, ta c
 
 Ngoài ra `git pull --rebase` cũng hay được sử dụng, do khi pull git sẽ tạo một commit merge hai branch lại, dùng câu lệnh này để chuyển các commit mới từ máy bạn lên trên commit mới nhất của branch remote, việc này để tránh việc merge không cần thiết (giữ cho commit history được sạch).
 
+# Tạo pull request (trên github)
+
+Khi làm việc trên branch khác branch chính, để có thể báo cho những người khác về những thay đổi của mình trước khi đẩy lên remote repository, ta cần tạo pull request.
+
+Tạo pull request giúp những người làm việc chung với bạn có thể bình luận, chia sẻ và cho ý kiến sửa chữa các commit của bạn trước khi cho phép merge vào remote repository đó.
+
+Ví dụ mình có một repository trên github như sau:
+
+![PR 1](../Baocao/images/PR1.png)
+
+Sau khi clone về, đang ở branch `master`, mình tạo một branch mới là `update-README` vào đó chỉnh sửa file README.md, sau đó push branch lên remote:
+
+```
+git checkout -b update-README
+
+*Chỉnh sửa file README.md*
+
+git add README.md
+git commit -m "Update README.md"
+git push origin update-README
+```
+
+Trên github sẽ hiện ra thông báo:
+
+![PR 1](../Baocao/images/PR2.png)
+
+Để tạo pull request ta bấm vào nút "Compare and pull request", nó sẽ chuyển đến trang:
+
+![PR 1](../Baocao/images/PR3.png)
+
+Thanh này cho biết bạn muốn merge branch nào vào branch nào (ở đây là merge update-README vào master):
+
+![PR 1](../Baocao/images/PR4.png)
+
+Còn phía dưới là tiêu đề của pull request và phần ghi comment. Bạn có thể sửa tiêu đề hoặc thêm comment, sau khi làm xong thì bấm nút "Create pull request". Ở đây mình ghi thêm comment "trả lời câu hỏi trong README.md":
+
+![PR 1](../Baocao/images/PR5.png)
+
+Sau khi bấm nút, github chuyển sang trang:
+
+![PR 1](../Baocao/images/PR6.png)
+
+Ở đây, những người làm việc trong remote repository này có thể bình luận, chia sẻ và cho ý kiến sửa chữa commit trong branch `update-README` trước khi cho phép merge vào branch `master`.
+Người có quyền sẽ sau đó sẽ cho merge hoặc cho close pull request (không cho merge).
+
+Ở đây, sau khi pull request đã được chấp thuận và merge vào branch `master` thì branch `master` đã có những thay đổi từ branch `update-README`:
+
+![PR 1](../Baocao/images/PR7.png)
