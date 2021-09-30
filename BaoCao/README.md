@@ -12,3 +12,12 @@
 1. Đi đến directory của repository muốn clone.
 2. nhập `git clone <url>`. Việc này sẽ tạo một folder với tên của repository được clone, trong đó là folder .git và tất cả các data của repository đó.
 3. Bắt đầu làm việc, add file, commit, ...
+
+# Tạo và checkout branch
+
+Nhập câu lệnh `git branch <tên branch>`. Nó sẽ tạo branch từ commit mà bạn hiện đang ở.
+
+Để chuyển sang branch mới tạo (hay một branch nào đó), nhập `git checkout <tên branch>`
+
+> Để tiện cho việc muốn tạo branch mới và di chuyển sang branch đó luôn, ta có thể nhập `git checkout -b <tên branch>` để thực hiện cả hai việc trên cùng một lúc.
+
