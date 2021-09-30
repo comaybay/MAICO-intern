@@ -57,3 +57,13 @@ Sau khi lưu lại và thoát khỏi editor, Git sẽ tạo commit này cùng v�
 
 Nếu commit message của bạn ngắn, bạn có thể tạo commit và nhập commit message cùng một lúc với câu lệnh `git commit -m "<message của commit này>"`
 
+# Thao tác push
+
+Sau khi commit thì các commit này chỉ có trong commit history của máy bạn, để đẩy nó lên remote repository, ta dùng câu lệnh `git push <remote> <branch>`. Việc này sẽ đẩy các commit mới của branch bạn lên branch của remote repository đó. Remote thường được đặt là 'origin' (khi clone repository trên github thì remote repository đó được đặt là 'origin').
+
+# Thao tác pull
+
+Khi làm việc với nhiều người trong cùng một remote repository, ta cần phải cập nhật repository trên máy của mình (để chứa các thay đổi mới của người khác trên remote repository), để cập nhật các thay đổi ta nhập `git pull <remote>`. Việc này sẽ lấy bản copy của branch mà bạn đang ở (lấy trên remote repository) và hợp nó với bản copy của bạn (trên máy bạn). Việc hợp 2 branch với nhau gọi là 'merge'.
+
+Ngoài ra `git pull --rebase` cũng hay được sử dụng, do khi pull git sẽ tạo một commit merge hai branch lại, dùng câu lệnh này để chuyển các commit mới từ máy bạn lên trên commit mới nhất của branch remote, việc này để tránh việc merge không cần thiết (giữ cho commit history được sạch).
+
