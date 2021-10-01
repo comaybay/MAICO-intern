@@ -1,8 +1,8 @@
 # Báo cáo: lộ trình học "nhập môn Blazor" và "Blazor nâng cao"
 
-Em sẽ bắt đầu học Blazor bằng video này trên youtube: [Blazor Course - Use ASP.NET Core to Build Full-Stack C# Web Apps](https://youtu.be/4G_BzLxa9Nw)
+Em sẽ bắt đầu học Blazor bằng video này trên youtube: [Blazor Course - Use ASP.NET Core to Build Full-Stack C# Web Apps](https://youtu.be/4G_BzLxa9Nw).
 
-Do video có nhắc đến các kiến thức trong cả 2 lộ trình, nên em sẽ dồn nó lại thành một báo cáo.
+Cùng với đó là trang [Blazor University](https://blazor-university.com/).
 
 Những kiến thức video không giảng (hoặc nếu không giải thích đủ rõ) thì em sẽ tìm kiếm trên các tài liệu khác và báo cáo ở đây.
 
