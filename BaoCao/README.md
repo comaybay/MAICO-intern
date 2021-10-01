@@ -115,3 +115,9 @@ Người có quyền sẽ sau đó sẽ cho merge hoặc cho close pull request 
 Ở đây, sau khi pull request đã được chấp thuận và merge vào branch `master` thì branch `master` đã có những thay đổi từ branch `update-README`:
 
 ![PR 7](../BaoCao/images/PR7.png)
+
+# Hoàn tác thay đổi với git revert
+
+Câu lệnh `git revert <commit>` sẽ tạo commit mới với những thay đổi dùng để hoàn tác thay đổi của commit được đưa vào trong câu lệnh. `<commit>` ở đây có nhiều cách để ghi, thông thường sẽ là 'commit hash'
+
+> ta có thể dùng lệnh `git log` để xem commit history và commit hash của các commit đó, commit hash được dùng để phân biệt các commit với nhau.
