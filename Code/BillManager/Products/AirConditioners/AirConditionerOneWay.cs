@@ -8,6 +8,13 @@ namespace BillManager.Products.AirConditioners
 {
     class AirConditionerOneWay : AirConditioner
     {
-        protected override decimal CalculatePrice() => InverterTechnologySupported ? 1500 : 1000;
+        public AirConditionerOneWay(string id, string name, string placeOfManufacture, bool inverterTechnologySupported)
+            : base(id, name, placeOfManufacture, inverterTechnologySupported)
+        {
+        }
+
+        public override string Type => "Máy lạnh một chiều";
+
+        public override decimal Price => InverterTechnologySupported ? 1500 : 1000;
     }
 }

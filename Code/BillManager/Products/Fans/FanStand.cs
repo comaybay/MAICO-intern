@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,12 @@ namespace BillManager.Products.Fans
 {
     class FanStand : Fan
     {
-        protected override decimal CalculatePrice() => 500;
+        public FanStand(string id, string name, string placeOfManufacture) : base(id, name, placeOfManufacture)
+        {
+        }
+
+        public override string Type => "Quạt đứng";
+
+        public override decimal Price => 500;
     }
 }

@@ -1,13 +1,21 @@
-﻿namespace BillManager.Models.Products
+namespace BillManager.Products
 {
     public abstract class Product
     {
-        public string Name { get; init; }
+        protected Product(string id, string name, string placeOfManufacture)
+        {
+            Id = id;
+            Name = name;
+            PlaceOfManufacture = placeOfManufacture;
+        }
+        public string Id { get; }
 
-        public string PlaceOfManufacture { get; init; }
+        public string Name { get; }
 
-        public decimal Price { get => CalculatePrice(); }
+        public string PlaceOfManufacture { get; }
 
-        protected abstract decimal CalculatePrice();
+        public abstract decimal Price { get; }
+
+        public abstract string Type { get; }
     }
 }

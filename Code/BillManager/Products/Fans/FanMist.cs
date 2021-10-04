@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,20 +8,19 @@ namespace BillManager.Products.Fans
 {
     class FanMist : Fan
     {
-        private float _waterContainerCapacity;
-
-        public float WaterContainerCapacity
+        public FanMist(string id, string name, string placeOfManufacture, float waterContainerCapacity)
+            : base(id, name, placeOfManufacture)
         {
-            get => _waterContainerCapacity;
-            init
-            {
-                if (_waterContainerCapacity < 0)
-                    throw new ArgumentException("WaterContainerCapacity cannot be set to a negative value.");
+            if (waterContainerCapacity < 0)
+                throw new ArgumentException("WaterContainerCapacity cannot be set to a negative value.");
 
-                _waterContainerCapacity = value;
-            }
+            WaterContainerCapacity = waterContainerCapacity;
         }
 
-        protected override decimal CalculatePrice() => (decimal)WaterContainerCapacity * 400;
+        public float WaterContainerCapacity { get; }
+
+        public override decimal Price => (decimal)WaterContainerCapacity * 400;
+
+        public override string Type => "Quạt hơi nước";
     }
 }

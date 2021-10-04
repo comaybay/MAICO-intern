@@ -8,21 +8,25 @@ namespace BillManager
 {
     class Bill
     {
-        public string ID { get; init; }
-
-        public Customer Customer { get; init; }
-
-        public IEnumerable<BillDetails> BillDetailsList { get; init; }
-
-        public DateTime DateCreated { get; init; }
-
-        private decimal _totalPrice;
-        public decimal TotalPrice { get => _totalPrice; }
-
-        public Bill()
+        public Bill(string id, DateTime dateCreated, Customer customer, IList<BillDetails> billDetailsList)
         {
-            _totalPrice = BillDetailsList.Select(details => details.Product.Price * details.Quantity)
+            Id = id;
+            Customer = customer;
+            BillDetailsList = billDetailsList;
+            DateCreated = dateCreated;
+
+            TotalPrice = BillDetailsList.Select(details => details.Product.Price * details.Quantity)
                                          .Sum();
         }
+
+        public string Id { get; }
+
+        public Customer Customer { get; }
+
+        public IList<BillDetails> BillDetailsList { get; }
+
+        public DateTime DateCreated { get; }
+
+        public decimal TotalPrice { get; }
     }
 }

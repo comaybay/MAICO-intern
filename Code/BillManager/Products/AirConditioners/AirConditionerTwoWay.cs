@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +8,27 @@ namespace BillManager.Products.AirConditioners
 {
     class AirConditionerTwoWay : AirConditioner
     {
-        public bool AntimicrobialSupported { get; init; }
+        public AirConditionerTwoWay(
+            string id, string name, string placeOfManufacture,
+            bool inverterTechnologySupported, bool antimicrobialSupported, bool airPurificationSupported
+            )
+            : base(id, name, placeOfManufacture, inverterTechnologySupported)
+        {
+            AntimicrobialSupported = antimicrobialSupported;
+            AirPurificationSupported = airPurificationSupported;
 
-        public bool AirPurificationSupported { get; init; }
+            Price = CalculatePrice();
+        }
 
-        protected override decimal CalculatePrice()
+        public bool AirPurificationSupported { get; }
+
+        public bool AntimicrobialSupported { get; }
+
+        public override decimal Price { get; }
+
+        public override string Type => "Máy lạnh hai chiều";
+
+        protected decimal CalculatePrice()
         {
             decimal price = 2000;
 

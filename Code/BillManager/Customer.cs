@@ -2,12 +2,20 @@
 {
     public class Customer
     {
-        public string Id { get; init; }
+        public Customer(string id, string name, string phoneNumber, string address)
+        {
+            Id = id;
+            Name = name;
+            PhoneNumber = phoneNumber;
+            Address = address;
+        }
 
-        public string Name { get; init; }
+        public string Id { get; }
 
-        public string PhoneNumber { get; init; }
+        public string Name { get; }
 
-        public string Address { get; init; }
+        public string PhoneNumber { get; }
+
+        public string Address { get; }
     }
 }

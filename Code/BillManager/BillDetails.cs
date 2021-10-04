@@ -1,11 +1,17 @@
-﻿using BillManager.Models.Products;
+﻿using BillManager.Products;
 
 namespace BillManager
 {
     public class BillDetails
     {
-        public Product Product { get; init; }
+        public BillDetails(Product product, int quantity)
+        {
+            Product = product;
+            Quantity = quantity;
+        }
 
-        public uint Quantity { get; init; }
+        public Product Product { get; }
+
+        public int Quantity { get; }
     }
 }

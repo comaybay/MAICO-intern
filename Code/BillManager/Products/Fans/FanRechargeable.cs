@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +8,16 @@ namespace BillManager.Products.Fans
 {
     class FanRechargeable : Fan
     {
-        public uint BatteryCapacity { get; init; }
+        public FanRechargeable(string id, string name, string placeOfManufacture, float batteryCapacity)
+            : base(id, name, placeOfManufacture)
+        {
+            BatteryCapacity = batteryCapacity;
+        }
 
-        protected override decimal CalculatePrice() => BatteryCapacity * 500;
+        public float BatteryCapacity { get; }
+
+        public override decimal Price => (decimal)BatteryCapacity * 500;
+
+        public override string Type => "Quạt sạc điện";
     }
 }
