@@ -83,6 +83,13 @@ namespace BillManager
 
             int billCount = _ioHelper.ReadNonNegativeInt("Số lượng đơn muốn nhập: ");
 
+            if (billCount == 0)
+            {
+                DisplayESCMessage();
+                WaitTillPressedESC();
+                return;
+            }
+
             for (int i = 1; i <= billCount; i++)
             {
                 _ioHelper.WriteLine($"Nhập thông tin đơn {i}:");
@@ -114,7 +121,7 @@ namespace BillManager
                 _ioHelper.DecreaseIndent();
             }
 
-            _ioHelper.WriteLine("Nhập Xong.");
+            DisplayInfo("Nhập Hóa đơn thành công!");
             DisplayESCMessage();
 
             WaitTillPressedESC();
@@ -187,8 +194,8 @@ namespace BillManager
             void DisplayInstructions()
             {
                 DisplayESCMessage();
-                _ioHelper.WriteLine("<> Bấm nút mũi tên trái/phải để chọn xem hóa đơn <>");
-                _ioHelper.WriteLine("<> Bấm nút mũi tên lên/xuống hoặc lăn chuột để có thể xem hết hóa đơn <>");
+                DisplayInfo("Bấm mũi tên trái/phải để chọn xem hóa đơn");
+                DisplayInfo("Bấm mũi tên lên/xuống hoặc lăn chuột để có thể xem hết hóa đơn");
                 _ioHelper.WriteLine($"<- Hóa đơn thứ {index + 1}/{_bills.Count} ->");
             }
 
@@ -303,6 +310,7 @@ namespace BillManager
                 continue;
         }
 
-        private void DisplayESCMessage() => _ioHelper.WriteLine("<> Bấm ESC để quay lại <>.");
+        private void DisplayESCMessage() => DisplayInfo("Bấm ESC để quay lại");
+        private void DisplayInfo(string msg) => _ioHelper.WriteLine($"<> {msg} <>");
     }
 }
