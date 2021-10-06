@@ -22,5 +22,11 @@ namespace BillManager.Products.Fans
         public override decimal Price => (decimal)WaterContainerCapacity * 400;
 
         public override string Type => "Quạt hơi nước";
+
+        public override IList<string> GetStringProps() => new List<string>(base.GetStringProps())
+            {
+                $"Dung tích nước: {WaterContainerCapacity} lít"
+            };
+        }
     }
 }

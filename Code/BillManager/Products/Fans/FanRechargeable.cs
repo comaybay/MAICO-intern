@@ -19,5 +19,10 @@ namespace BillManager.Products.Fans
         public override decimal Price => (decimal)BatteryCapacity * 500;
 
         public override string Type => "Quạt sạc điện";
+
+        public override IList<string> GetStringProps() => new List<string>(base.GetStringProps())
+            {
+                $"Dung lượng pin: {BatteryCapacity} Ah"
+            };
     }
 }

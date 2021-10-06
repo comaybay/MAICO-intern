@@ -15,5 +15,10 @@ namespace BillManager.Products.AirConditioners
         }
 
         public bool InverterTechnologySupported { get; }
+
+        public override IList<string> GetStringProps() => new List<string>(base.GetStringProps())
+            {
+                $"Hỗ trợ công nghệ Inverter: {(InverterTechnologySupported ? "Có" : "Không")}"
+            };
     }
 }

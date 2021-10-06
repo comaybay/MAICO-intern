@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +27,12 @@ namespace BillManager.Products.AirConditioners
         public override decimal Price { get; }
 
         public override string Type => "Máy lạnh hai chiều";
+
+        public override IList<string> GetStringProps() => new List<string>(base.GetStringProps())
+            {
+                $"Hỗ trợ công nghệ khử mùi: {(AirPurificationSupported ? "Có" : "Không")}",
+                $"Hỗ trợ công nghệ kháng khuẩn: {(AntimicrobialSupported ? "Có" : "Không")}"
+            };
 
         protected decimal CalculatePrice()
         {
