@@ -34,6 +34,8 @@ namespace BillManager.Products.AirConditioners
                 $"Hỗ trợ công nghệ kháng khuẩn: {(AntimicrobialSupported ? "Có" : "Không")}"
             };
 
+        public override string GetPropValuesAsSingleString() => $"{base.GetPropValuesAsSingleString()} {AntimicrobialSupported} {AirPurificationSupported}";
+
         protected decimal CalculatePrice()
         {
             decimal price = 2000;

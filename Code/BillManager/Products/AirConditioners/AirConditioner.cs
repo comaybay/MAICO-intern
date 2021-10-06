@@ -20,5 +20,7 @@ namespace BillManager.Products.AirConditioners
             {
                 $"Hỗ trợ công nghệ Inverter: {(InverterTechnologySupported ? "Có" : "Không")}"
             };
+
+        public override string GetPropValuesAsSingleString() => $"Máy lạnh: {base.GetPropValuesAsSingleString()} {InverterTechnologySupported}";
     }
 }

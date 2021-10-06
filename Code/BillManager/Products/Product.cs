@@ -31,9 +31,6 @@ namespace BillManager.Products
                 $"Đơn giá: {Price} nghìn vnđ",
             };
         }
-        public virtual string GetPropValuesAsSingleString()
-        {
-            throw new System.NotImplementedException();
-        }
+        public virtual string GetPropValuesAsSingleString() => $"{Id} {Type} {Name} {PlaceOfManufacture} {Price}";
     }
 }

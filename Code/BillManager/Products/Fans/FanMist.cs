@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +27,7 @@ namespace BillManager.Products.Fans
             {
                 $"Dung tích nước: {WaterContainerCapacity} lít"
             };
-        }
+
+        public override string GetPropValuesAsSingleString() => $"{base.GetPropValuesAsSingleString()} {WaterContainerCapacity}";
     }
 }

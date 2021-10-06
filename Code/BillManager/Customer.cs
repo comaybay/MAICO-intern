@@ -28,9 +28,6 @@ namespace BillManager
                 $"Địa chỉ: {Address}"
             };
 
-        public string GetPropValuesAsSingleString()
-        {
-            throw new System.NotImplementedException();
-        }
+        public string GetPropValuesAsSingleString() => $"Thông tin khác hàng: {Id} {Name} {Address} {PhoneNumber}";
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +24,7 @@ namespace BillManager.Products.Fans
             {
                 $"Dung lượng pin: {BatteryCapacity} Ah"
             };
+
+        public override string GetPropValuesAsSingleString() => $"{base.GetPropValuesAsSingleString()} {BatteryCapacity}";
     }
 }
