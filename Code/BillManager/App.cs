@@ -1,4 +1,4 @@
-using BillManager.Products;
+﻿using BillManager.Products;
 using BillManager.Products.Factories;
 using System;
 using System.Collections.Generic;
@@ -24,6 +24,8 @@ namespace BillManager
 
         private static readonly FormatOptions _saveFormatOptions = new() { IndentSize = 6, LineSpacing = 2 };
 
+        private static readonly FormatOptions _menuFormatOptions = new() { IndentSize = 3, LineSpacing = 1 };
+
         private readonly string _saveFileName;
 
         public App(FormatOptions inputFormatOptions, FormatOptions displayFormatOptions, string saveFileName)
@@ -34,7 +36,6 @@ namespace BillManager
                 throw new ArgumentOutOfRangeException(nameof(displayFormatOptions), $"{nameof(displayFormatOptions)} indent size must be >= 1");
 
             _displayFormatOptions = displayFormatOptions;
-
             _saveFileName = saveFileName;
 
             _ioHelper = new IOHelper();
@@ -43,16 +44,44 @@ namespace BillManager
 
         public void Run()
         {
-            AddBillThroughUserInput();
-            DisplayBills();
-            throw new NotImplementedException();
+            while (true)
+            {
+                _ioHelper.SetFormatOptions(_menuFormatOptions);
+
+                Console.Clear();
+                _ioHelper.WriteLine("PHẦN MỀM QUẢN LÝ HÓA ĐƠN");
+                _ioHelper.WriteLine("1. Nhập hóa đơn");
+                _ioHelper.WriteLine("2. Xuất danh sách hóa đơn");
+                _ioHelper.WriteLine("3. Lưu danh sách hóa đơn");
+                _ioHelper.WriteLine("4. Thoát");
+                _ioHelper.WriteLine();
+
+                _ioHelper.IncreaseIndent();
+                int choice = _ioHelper.ReadIntWithCondition("Chọn: ", val => val >= 1 && val <= 4);
+                _ioHelper.DecreaseIndent();
+
+                if (choice == 1)
+                    AddBillThroughUserInput();
+
+                else if (choice == 2)
+                    DisplayBills();
+
+                else if (choice == 3)
+                    SaveBillsToFile();
+
+                else
+                    return;
+            }
+
         }
 
         public void AddBillThroughUserInput()
         {
             _ioHelper.SetFormatOptions(_inputFormatOptions);
 
-            int billCount = _ioHelper.ReadNonNegativeInt("Số lượng đơn muốn nhập (0 để thoát): ");
+            Console.Clear();
+
+            int billCount = _ioHelper.ReadNonNegativeInt("Số lượng đơn muốn nhập: ");
 
             for (int i = 1; i <= billCount; i++)
             {
@@ -84,6 +113,11 @@ namespace BillManager
 
                 _ioHelper.DecreaseIndent();
             }
+
+            _ioHelper.WriteLine("Nhập Xong.");
+            DisplayESCMessage();
+
+            WaitTillPressedESC();
         }
 
         private IList<BillDetails> ReadBillDetailsList()
@@ -131,20 +165,18 @@ namespace BillManager
         public void DisplayBills()
         {
             _ioHelper.SetFormatOptions(_displayFormatOptions);
+
+            Console.Clear();
+
             if (_bills.Count == 0)
             {
-                Console.Clear();
-                _ioHelper.IncreaseIndent();
-
                 _ioHelper.WriteLine("Không có hóa đơn để xuất.");
                 DisplayESCMessage();
-
-                _ioHelper.DecreaseIndent();
 
                 while (Console.ReadKey(true).Key != ConsoleKey.Escape)
                     continue;
 
-                    return;
+                return;
             }
 
             int index = 0;
@@ -228,7 +260,7 @@ namespace BillManager
                 WaitTillPressedESC();
 
                 return;
-        }
+            }
 
             _ioHelper.WriteLine("Đang lưu...");
 
@@ -247,14 +279,14 @@ namespace BillManager
                 outputFile.Write($"{indent}Danh sách các chi tiết hóa đơn:");
 
                 foreach (BillDetails details in bill.BillDetailsList)
-        {
+                {
                     outputFile.Write(lineSpacing);
                     string productStr = details.Product.GetPropValuesAsSingleString();
                     outputFile.Write($"{indent}{indent}{productStr} {details.Quantity}");
-        }
+                }
 
                 outputFile.Write(lineSpacing);
-    }
+            }
 
             Console.Clear();
             _ioHelper.WriteLine("Đã lưu danh sách hóa đơn!");
