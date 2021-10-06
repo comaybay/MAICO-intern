@@ -12,14 +12,17 @@ namespace BillManager
     class App
     {
 
-        private IList<Bill> _bills = new List<Bill>();
+        private readonly IList<Bill> _bills = new List<Bill>();
 
         private readonly IOHelper _ioHelper;
+
         private readonly BillDisplayer _billDisplayer;
 
         private readonly FormatOptions _inputFormatOptions;
 
         private readonly FormatOptions _displayFormatOptions;
+
+        private static readonly FormatOptions _saveFormatOptions = new() { IndentSize = 6, LineSpacing = 2 };
 
         private readonly string _saveFileName;
 
@@ -211,17 +214,63 @@ namespace BillManager
             }
         }
 
-        public void DisplayESCMessage()
-        {
-            _ioHelper.WriteLine("<> Bấm ESC để quay lại <>.");
-        }
-
         public void SaveBillsToFile()
         {
-            throw new NotImplementedException();
+            _ioHelper.SetFormatOptions(_displayFormatOptions);
+
+            Console.Clear();
+
+            if (_bills.Count == 0)
+            {
+                _ioHelper.WriteLine("Không có hóa đơn để lưu.");
+                DisplayESCMessage();
+
+                WaitTillPressedESC();
+
+                return;
         }
 
+            _ioHelper.WriteLine("Đang lưu...");
+
+            string outputPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{_saveFileName}.txt");
+            using var outputFile = new StreamWriter(outputPath);
+
+            string indent = new(' ', _saveFormatOptions.IndentSize);
+            string lineSpacing = new('\n', _saveFormatOptions.LineSpacing);
+
+            foreach (Bill bill in _bills)
+            {
+                outputFile.Write($"Hóa đơn: {bill.Id} {bill.DateCreated:dd/MM/yyyy} {bill.TotalPrice}");
+                outputFile.Write(lineSpacing);
+                outputFile.Write($"{indent}{bill.Customer.GetPropValuesAsSingleString()}");
+                outputFile.Write(lineSpacing);
+                outputFile.Write($"{indent}Danh sách các chi tiết hóa đơn:");
+
+                foreach (BillDetails details in bill.BillDetailsList)
+        {
+                    outputFile.Write(lineSpacing);
+                    string productStr = details.Product.GetPropValuesAsSingleString();
+                    outputFile.Write($"{indent}{indent}{productStr} {details.Quantity}");
+        }
+
+                outputFile.Write(lineSpacing);
     }
 
+            Console.Clear();
+            _ioHelper.WriteLine("Đã lưu danh sách hóa đơn!");
+            _ioHelper.WriteLine($"Lưu tại: {outputPath}");
+            _ioHelper.WriteLine();
+            DisplayESCMessage();
 
+            WaitTillPressedESC();
+        }
+
+        private static void WaitTillPressedESC()
+        {
+            while (Console.ReadKey(true).Key != ConsoleKey.Escape)
+                continue;
+        }
+
+        private void DisplayESCMessage() => _ioHelper.WriteLine("<> Bấm ESC để quay lại <>.");
+    }
 }
