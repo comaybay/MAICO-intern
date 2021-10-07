@@ -1,4 +1,4 @@
-﻿using BillManager.Products;
+using BillManager.Products;
 using BillManager.Products.Factories;
 using System;
 using System.Collections.Generic;
@@ -294,6 +294,8 @@ namespace BillManager
 
                 outputFile.Write(lineSpacing);
             }
+
+            outputFile.Close();
 
             Console.Clear();
             _ioHelper.WriteLine("Đã lưu danh sách hóa đơn!");
