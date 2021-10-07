@@ -26,9 +26,9 @@ namespace BillManager
 
         private static readonly FormatOptions _menuFormatOptions = new() { IndentSize = 3, LineSpacing = 1 };
 
-        private readonly string _saveFileName;
+        private readonly string _defaultSaveFileName;
 
-        public App(FormatOptions inputFormatOptions, FormatOptions displayFormatOptions, string saveFileName)
+        public App(FormatOptions inputFormatOptions, FormatOptions displayFormatOptions, string defaultSaveFileName)
         {
             _inputFormatOptions = inputFormatOptions;
 
@@ -36,7 +36,7 @@ namespace BillManager
                 throw new ArgumentOutOfRangeException(nameof(displayFormatOptions), $"{nameof(displayFormatOptions)} indent size must be >= 1");
 
             _displayFormatOptions = displayFormatOptions;
-            _saveFileName = saveFileName;
+            _defaultSaveFileName = defaultSaveFileName;
 
             _ioHelper = new IOHelper();
             _billDisplayer = new BillDisplayer(_ioHelper);
@@ -274,9 +274,17 @@ namespace BillManager
                 return;
             }
 
+            string saveFileName = _defaultSaveFileName;
+
+            _ioHelper.WriteLine($"danh sách hóa đơn sẽ được lưu vào file có tên là '{_defaultSaveFileName}'");
+
+            bool willChangeFileName = _ioHelper.ReadBoolean($"Bạn có muốn đổi tên này? (0-Không, 1-Có): ");
+            if (willChangeFileName)
+                saveFileName = _ioHelper.ReadNonEmptyString($"Nhập tên file để lưu: ").Trim();
+
             _ioHelper.WriteLine("Đang lưu...");
 
-            string outputPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{_saveFileName}.txt");
+            string outputPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{saveFileName}.txt");
             using var outputFile = new StreamWriter(outputPath);
 
             string indent = new(' ', _saveFormatOptions.IndentSize);
@@ -318,6 +326,7 @@ namespace BillManager
         }
 
         private void DisplayESCMessage() => DisplayInfo("Bấm ESC để quay lại");
+
         private void DisplayInfo(string msg) => _ioHelper.WriteLine($"<> {msg} <>");
     }
 }

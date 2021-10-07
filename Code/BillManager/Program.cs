@@ -25,7 +25,7 @@ namespace BillManager
             (
                 inputFormatOptions,
                 displayFormatOptions,
-                saveFileName: "danh_sach_hoa_don"
+                defaultSaveFileName: "danh_sach_hoa_don"
             );
 
             app.Run();
