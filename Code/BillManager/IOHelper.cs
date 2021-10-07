@@ -25,7 +25,6 @@ namespace BillManager
             LineSpacing = options.LineSpacing;
         }
 
-
         public void IncreaseIndent()
         {
             _offsetX += BaseOffsetX;
@@ -125,7 +124,7 @@ namespace BillManager
             });
 
         public char ReadCharWithCondition(string msg, Func<char, bool> condition) =>
-            ReadKeyAndParse<char>(msg, (input) =>
+            ReadCharAndParse<char>(msg, (input) =>
             {
                 if (condition(input))
                     return (true, input);
@@ -135,8 +134,17 @@ namespace BillManager
 
             });
 
-        private T ReadKeyAndParse<T>(string msg, Func<char, (bool success, T res)> tryParse) =>
-            ReadAndParse<char, T>(msg, tryParse, () => Console.ReadKey().KeyChar);
+        private T ReadCharAndParse<T>(string msg, Func<char, (bool success, T res)> tryParse) =>
+            ReadAndParse<char, T>(msg, tryParse, () =>
+            {
+                ConsoleKeyInfo key = Console.ReadKey();
+
+                //không nhận nút ESC do ESC làm xóa chuỗi người dùng nhập
+                while (key.Key == ConsoleKey.Escape)
+                    key = Console.ReadKey();
+
+                return key.KeyChar;
+            });
 
         private T ReadLineAndParse<T>(string msg, Func<string, (bool success, T res)> tryParse) =>
             ReadAndParse<string, T>(msg, tryParse, () => Console.ReadLine());
@@ -166,37 +174,39 @@ namespace BillManager
 
                 (bool success, PARSE_T value) = tryParse(input);
 
-                if (success)
+                if (!success)
                 {
-                    //xóa focus
-                    if (_offsetX >= 2)
-                    {
-                        Console.SetCursorPosition(0, baseCursorTop);
-                        Console.Write(new string(' ', focus.Length));
-                    }
+                    shake = (shake == "") ? " " : "";
+                    Console.WriteLine();
+                    Console.Write(padding + shake + "<!> Giá trị nhập không hợp lệ. <!> ");
 
-                    //xóa dòng báo lỗi nếu có
-                    Console.SetCursorPosition(0, baseCursorTop + 1);
+                    //xóa dòng msg phía trên
+                    Console.SetCursorPosition(0, baseCursorTop);
                     Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, baseCursorTop);
 
-
-                    //kéo màn hình xuống
-                    Console.SetCursorPosition(0, baseCursorTop + (Console.WindowHeight / 2));
-
-                    //quay về chỗ cũ và xuống dòng
-                    Console.SetCursorPosition(0, baseCursorTop + LineSpacing);
-
-                    return value;
+                    continue;
                 }
 
-                shake = (shake == "") ? " " : "";
-                Console.WriteLine();
-                Console.Write(padding + shake + "<!> Giá trị nhập không hợp lệ. <!> ");
+                //xóa focus
+                if (_offsetX >= 2)
+                {
+                    Console.SetCursorPosition(0, baseCursorTop);
+                    Console.Write(new string(' ', focus.Length));
+                }
 
-                //xóa dòng msg phía trên
-                Console.SetCursorPosition(0, baseCursorTop);
+                //xóa dòng báo lỗi nếu có
+                Console.SetCursorPosition(0, baseCursorTop + 1);
                 Console.Write(new string(' ', Console.WindowWidth));
-                Console.SetCursorPosition(0, baseCursorTop);
+
+
+                //kéo màn hình xuống
+                Console.SetCursorPosition(0, baseCursorTop + (Console.WindowHeight / 2));
+
+                //quay về chỗ cũ và xuống dòng
+                Console.SetCursorPosition(0, baseCursorTop + LineSpacing);
+
+                return value;
             }
         }
     }
