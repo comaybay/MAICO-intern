@@ -66,10 +66,7 @@ namespace BillManager
                 _ioHelper.DecreaseIndent();
 
                 if (choice == '1')
-                {
                     AddBillThroughUserInput();
-
-                }
 
                 else if (choice == '2')
                     DisplayBills();
@@ -83,9 +80,8 @@ namespace BillManager
 
         }
 
-        public async Task AddBillThroughUserInput()
+        public void AddBillThroughUserInput()
         {
-
             _ioHelper.SetFormatOptions(_inputFormatOptions);
 
             Console.Clear();
