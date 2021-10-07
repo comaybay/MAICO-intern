@@ -1,4 +1,4 @@
-using BillManager.Products;
+﻿using BillManager.Products;
 using BillManager.Products.Factories;
 using System;
 using System.Collections.Generic;
@@ -57,16 +57,24 @@ namespace BillManager
                 _ioHelper.WriteLine();
 
                 _ioHelper.IncreaseIndent();
-                int choice = _ioHelper.ReadIntWithCondition("Chọn: ", val => val >= 1 && val <= 4);
+
+                char choice = _ioHelper.ReadCharWithCondition(
+                    "Chọn: ",
+                    ch => (int.TryParse(ch.ToString(), out int val) && val >= 1 && val <= 4)
+                    );
+
                 _ioHelper.DecreaseIndent();
 
-                if (choice == 1)
+                if (choice == '1')
+                {
                     AddBillThroughUserInput();
 
-                else if (choice == 2)
+                }
+
+                else if (choice == '2')
                     DisplayBills();
 
-                else if (choice == 3)
+                else if (choice == '3')
                     SaveBillsToFile();
 
                 else
@@ -75,8 +83,9 @@ namespace BillManager
 
         }
 
-        public void AddBillThroughUserInput()
+        public async Task AddBillThroughUserInput()
         {
+
             _ioHelper.SetFormatOptions(_inputFormatOptions);
 
             Console.Clear();

@@ -44,7 +44,7 @@ namespace BillManager
         }
 
         public string ReadNonEmptyString(string msg) =>
-            ReadAndParse<string>(msg, (input) =>
+            ReadLineAndParse<string>(msg, (input) =>
             {
                 if (!string.IsNullOrWhiteSpace(input))
                     return (true, input);
@@ -54,7 +54,7 @@ namespace BillManager
             });
 
         public decimal ReadDecimal(string msg) =>
-            ReadAndParse<decimal>(msg, (input) =>
+            ReadLineAndParse<decimal>(msg, (input) =>
             {
                 if (decimal.TryParse(input, out decimal res))
                     return (true, res);
@@ -64,7 +64,7 @@ namespace BillManager
             });
 
         public DateTime ReadDate(string msg) =>
-            ReadAndParse<DateTime>(msg, (input) =>
+            ReadLineAndParse<DateTime>(msg, (input) =>
             {
                 if (DateTime.TryParseExact(input, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime res))
                     return (true, res);
@@ -74,7 +74,7 @@ namespace BillManager
             });
 
         public float ReadNonNegativeFloat(string msg) =>
-           ReadAndParse<float>(msg, (input) =>
+           ReadLineAndParse<float>(msg, (input) =>
             {
                 if (float.TryParse(input, out float res) && res >= 0)
                     return (true, res);
@@ -84,7 +84,7 @@ namespace BillManager
             });
 
         public bool ReadBoolean(string msg) =>
-            ReadAndParse<bool>(msg, (input) =>
+            ReadLineAndParse<bool>(msg, (input) =>
             {
                 return input switch
                 {
@@ -95,7 +95,7 @@ namespace BillManager
             });
 
         public int ReadInt(string msg) =>
-           ReadAndParse<int>(msg, (input) =>
+           ReadLineAndParse<int>(msg, (input) =>
            {
                if (int.TryParse(input, out int res))
                    return (true, res);
@@ -105,7 +105,7 @@ namespace BillManager
            });
 
         public int ReadNonNegativeInt(string msg) =>
-           ReadAndParse<int>(msg, (input) =>
+           ReadLineAndParse<int>(msg, (input) =>
            {
                if (int.TryParse(input, out int res) && res >= 0)
                    return (true, res);
@@ -115,7 +115,7 @@ namespace BillManager
            });
 
         public int ReadIntWithCondition(string msg, Func<int, bool> condition) =>
-            ReadAndParse<int>(msg, (input) =>
+            ReadLineAndParse<int>(msg, (input) =>
             {
                 if (int.TryParse(input, out int res) && condition(res))
                     return (true, res);
@@ -124,7 +124,24 @@ namespace BillManager
                     return (false, 0);
             });
 
-        private T ReadAndParse<T>(string msg, Func<string, (bool success, T res)> tryParse)
+        public char ReadCharWithCondition(string msg, Func<char, bool> condition) =>
+            ReadKeyAndParse<char>(msg, (input) =>
+            {
+                if (condition(input))
+                    return (true, input);
+
+                else
+                    return (false, ' ');
+
+            });
+
+        private T ReadKeyAndParse<T>(string msg, Func<char, (bool success, T res)> tryParse) =>
+            ReadAndParse<char, T>(msg, tryParse, () => Console.ReadKey().KeyChar);
+
+        private T ReadLineAndParse<T>(string msg, Func<string, (bool success, T res)> tryParse) =>
+            ReadAndParse<string, T>(msg, tryParse, () => Console.ReadLine());
+
+        private PARSE_T ReadAndParse<READ_T, PARSE_T>(string msg, Func<READ_T, (bool success, PARSE_T res)> tryParse, Func<READ_T> readInput)
         {
             string padding;
             string focus = ">>";
@@ -143,38 +160,43 @@ namespace BillManager
             {
                 Console.Write(focus + padding + msg);
 
-                (bool success, T value) = tryParse(Console.ReadLine());
+                int baseCursorTop = Console.CursorTop;
+                READ_T input = readInput();
+                Console.SetCursorPosition(Console.CursorLeft, baseCursorTop);
 
-                int baseTop = Console.CursorTop;
+                (bool success, PARSE_T value) = tryParse(input);
+
                 if (success)
                 {
                     //xóa focus
                     if (_offsetX >= 2)
                     {
-                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.SetCursorPosition(0, baseCursorTop);
                         Console.Write(new string(' ', focus.Length));
-                        Console.SetCursorPosition(0, Console.CursorTop + 1);
                     }
 
                     //xóa dòng báo lỗi nếu có
+                    Console.SetCursorPosition(0, baseCursorTop + 1);
                     Console.Write(new string(' ', Console.WindowWidth));
 
 
                     //kéo màn hình xuống
-                    Console.SetCursorPosition(0, baseTop + (Console.WindowHeight / 2));
+                    Console.SetCursorPosition(0, baseCursorTop + (Console.WindowHeight / 2));
 
-                    Console.SetCursorPosition(0, baseTop + LineSpacing - 1);
+                    //quay về chỗ cũ và xuống dòng
+                    Console.SetCursorPosition(0, baseCursorTop + LineSpacing);
 
                     return value;
                 }
 
                 shake = (shake == "") ? " " : "";
+                Console.WriteLine();
                 Console.Write(padding + shake + "<!> Giá trị nhập không hợp lệ. <!> ");
 
                 //xóa dòng msg phía trên
-                Console.SetCursorPosition(0, baseTop - 1);
+                Console.SetCursorPosition(0, baseCursorTop);
                 Console.Write(new string(' ', Console.WindowWidth));
-                Console.SetCursorPosition(0, baseTop - 1);
+                Console.SetCursorPosition(0, baseCursorTop);
             }
         }
     }
