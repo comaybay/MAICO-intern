@@ -1,0 +1,21 @@
+﻿@page "/routeConstraint/{number:float}"
+
+<h3>Input number is @Number</h3>
+<input size="55" placeholder="Only float number can match RouteConstraint's route parameter" @bind="input" /> <NavLink href=@{$"routeConstraint/{input}"}>Click</NavLink>
+
+@if (!float.TryParse(input, out float _))
+{
+    <p class="text-warning">This value will not match with RouteConstraint's route parameter'.</p>
+}
+else
+{
+    <p class="text-success">This value will match with RouteConstraint's route parameter'.</p>
+}
+
+@code {
+
+    [Parameter]
+    public float Number { get; set; }
+
+    private string input;
+}

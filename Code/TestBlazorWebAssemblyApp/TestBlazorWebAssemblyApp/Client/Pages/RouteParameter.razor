@@ -1,0 +1,17 @@
+﻿@page "/routeParameter/{text?}"
+
+<h3>Blazor is @Text</h3>
+<input @bind="input" /> <NavLink href=@{$"routeParameter/{input}"}>Click</NavLink>
+
+@code {
+
+    [Parameter]
+    public string Text { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Text = Text ?? "pretty cool i guess... too bloated for my liking tho";
+    }
+
+    private string input;
+}
