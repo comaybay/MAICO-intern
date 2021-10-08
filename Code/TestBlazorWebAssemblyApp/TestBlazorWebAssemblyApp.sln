@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31605.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBlazorWebAssemblyApp.Server", "TestBlazorWebAssemblyApp\Server\TestBlazorWebAssemblyApp.Server.csproj", "{972C3C0B-C712-4ED4-AE9F-50A20AE1CA8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBlazorWebAssemblyApp.Server", "TestBlazorWebAssemblyApp\Server\TestBlazorWebAssemblyApp.Server.csproj", "{972C3C0B-C712-4ED4-AE9F-50A20AE1CA8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBlazorWebAssemblyApp.Client", "TestBlazorWebAssemblyApp\Client\TestBlazorWebAssemblyApp.Client.csproj", "{76B90849-A08F-47CC-BA58-9169B56B0EA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBlazorWebAssemblyApp.Client", "TestBlazorWebAssemblyApp\Client\TestBlazorWebAssemblyApp.Client.csproj", "{76B90849-A08F-47CC-BA58-9169B56B0EA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBlazorWebAssemblyApp.Shared", "TestBlazorWebAssemblyApp\Shared\TestBlazorWebAssemblyApp.Shared.csproj", "{C658F480-7D17-4D24-B415-1AFF0369DB72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBlazorWebAssemblyApp.Shared", "TestBlazorWebAssemblyApp\Shared\TestBlazorWebAssemblyApp.Shared.csproj", "{C658F480-7D17-4D24-B415-1AFF0369DB72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
