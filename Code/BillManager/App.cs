@@ -282,9 +282,11 @@ namespace BillManager
             if (willChangeFileName)
                 saveFileName = _ioHelper.ReadNonEmptyString($"Nhập tên file để lưu: ").Trim();
 
+            string dir = _ioHelper.ReadDirectory("Nhập đường dẫn lưu file (VD: 'D:/'): ");
+
             _ioHelper.WriteLine("Đang lưu...");
 
-            string outputPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{saveFileName}.txt");
+            string outputPath = Path.Combine(dir, $"{saveFileName}.txt");
             using var outputFile = new StreamWriter(outputPath);
 
             string indent = new(' ', _saveFormatOptions.IndentSize);

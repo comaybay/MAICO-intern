@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,96 +44,108 @@ namespace BillManager
         }
 
         public string ReadNonEmptyString(string msg) =>
-            ReadLineAndParse<string>(msg, (input) =>
-            {
-                if (!string.IsNullOrWhiteSpace(input))
-                    return (true, input);
+            ReadLineAndParse<string>(msg, input =>
+             {
+                 if (!string.IsNullOrWhiteSpace(input))
+                     return (true, input);
 
-                else
-                    return (false, null);
-            });
+                 else
+                     return (false, null);
+             });
 
         public decimal ReadDecimal(string msg) =>
-            ReadLineAndParse<decimal>(msg, (input) =>
-            {
-                if (decimal.TryParse(input, out decimal res))
-                    return (true, res);
+            ReadLineAndParse<decimal>(msg, input =>
+             {
+                 if (decimal.TryParse(input, out decimal res))
+                     return (true, res);
 
-                else
-                    return (false, 0);
-            });
+                 else
+                     return (false, 0);
+             });
 
         public DateTime ReadDate(string msg) =>
-            ReadLineAndParse<DateTime>(msg, (input) =>
-            {
-                if (DateTime.TryParseExact(input, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime res))
-                    return (true, res);
+            ReadLineAndParse<DateTime>(msg, input =>
+             {
+                 if (DateTime.TryParseExact(input, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime res))
+                     return (true, res);
 
-                else
-                    return (false, DateTime.MinValue);
-            });
+                 else
+                     return (false, DateTime.MinValue);
+             });
 
         public float ReadNonNegativeFloat(string msg) =>
-           ReadLineAndParse<float>(msg, (input) =>
-            {
-                if (float.TryParse(input, out float res) && res >= 0)
-                    return (true, res);
+           ReadLineAndParse<float>(msg, input =>
+             {
+                 if (float.TryParse(input, out float res) && res >= 0)
+                     return (true, res);
 
-                else
-                    return (false, 0);
-            });
+                 else
+                     return (false, 0);
+             });
 
         public bool ReadBoolean(string msg) =>
-            ReadLineAndParse<bool>(msg, (input) =>
-            {
-                return input switch
-                {
-                    "0" => (true, false),
-                    "1" => (true, true),
-                    _ => (false, false),
-                };
-            });
+            ReadLineAndParse<bool>(msg, input =>
+             {
+                 return input switch
+                 {
+                     "0" => (true, false),
+                     "1" => (true, true),
+                     _ => (false, false),
+                 };
+             });
 
         public int ReadInt(string msg) =>
-           ReadLineAndParse<int>(msg, (input) =>
-           {
-               if (int.TryParse(input, out int res))
-                   return (true, res);
-
-               else
-                   return (false, 0);
-           });
-
-        public int ReadNonNegativeInt(string msg) =>
-           ReadLineAndParse<int>(msg, (input) =>
-           {
-               if (int.TryParse(input, out int res) && res >= 0)
-                   return (true, res);
-
-               else
-                   return (false, 0);
-           });
-
-        public int ReadIntWithCondition(string msg, Func<int, bool> condition) =>
-            ReadLineAndParse<int>(msg, (input) =>
+           ReadLineAndParse<int>(msg, input =>
             {
-                if (int.TryParse(input, out int res) && condition(res))
+                if (int.TryParse(input, out int res))
                     return (true, res);
 
                 else
                     return (false, 0);
             });
 
-        public char ReadCharWithCondition(string msg, Func<char, bool> condition) =>
-            ReadCharAndParse<char>(msg, (input) =>
+        public int ReadNonNegativeInt(string msg) =>
+           ReadLineAndParse<int>(msg, input =>
             {
-                if (condition(input))
+                if (int.TryParse(input, out int res) && res >= 0)
+                    return (true, res);
+
+                else
+                    return (false, 0);
+            });
+
+        public int ReadIntWithCondition(string msg, Func<int, bool> condition) =>
+            ReadLineAndParse<int>(msg, input =>
+             {
+                 if (int.TryParse(input, out int res) && condition(res))
+                     return (true, res);
+
+                 else
+                     return (false, 0);
+             });
+
+        public string ReadDirectory(string msg) =>
+            ReadLineAndParse<string>(msg, input =>
+            {
+                if (Directory.Exists(input))
                     return (true, input);
 
                 else
-                    return (false, ' ');
-
+                    return (false, "");
             });
+
+
+        public char ReadCharWithCondition(string msg, Func<char, bool> condition) =>
+            ReadCharAndParse<char>(msg, input =>
+             {
+                 if (condition(input))
+                     return (true, input);
+
+                 else
+                     return (false, ' ');
+
+             });
+
 
         private T ReadCharAndParse<T>(string msg, Func<char, (bool success, T res)> tryParse) =>
             ReadAndParse<char, T>(msg, tryParse, () =>

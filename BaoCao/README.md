@@ -179,6 +179,8 @@ Nếu có, `App` sử dụng `BillDisplayer` để xuất thông tin danh sách 
 
 Nếu có, `App` sẽ tạo file (mặc định là "danh_sach_hoa_don.txt") và lưu tại thư mục chứa chương trình (BillManager.exe).
 
+Người dùng sẽ được quyền đổi tên file và địa điểm lưu file.
+
 `App` sau đó thông báo cho người dùng danh sách hóa đơn đã lưu thành công và địa điểm lưu.
 
 `App` lưu thông tin của sản phẩm bằng cách sử dụng phương thức được đảm bảo bởi `IStringConvertable`.
