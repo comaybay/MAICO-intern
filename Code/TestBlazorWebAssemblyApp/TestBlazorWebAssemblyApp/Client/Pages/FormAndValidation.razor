@@ -1,0 +1,86 @@
+﻿@page "/form-and-validation"
+@using TestBlazorWebAssemblyApp.Shared
+
+<EditForm Model="@starship" OnValidSubmit="@HandleValidSubmit">
+    <div class="border border-warning p-4">
+        <p>
+            <label>
+                Identifier:
+                <InputText @bind-Value="starship.Identifier" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Description (optional):
+                <InputTextArea @bind-Value="starship.Description" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Primary Classification:
+                <InputSelect @bind-Value="starship.Classification">
+                    <option value="">Select classification ...</option>
+                    <option value="Exploration">Exploration</option>
+                    <option value="Diplomacy">Diplomacy</option>
+                    <option value="Defense">Defense</option>
+                </InputSelect>
+            </label>
+        </p>
+        <p>
+            <label>
+                Maximum Accommodation:
+                <InputNumber @bind-Value="starship.MaximumAccommodation" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Engineering Approval:
+                <InputCheckbox @bind-Value="starship.IsValidatedDesign" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Production Date:
+                <InputDate @bind-Value="starship.ProductionDate" DisplayName="Production Date" />
+            </label>
+        </p>
+
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <button type="submit">Submit</button>
+
+        <p>
+            <a href="http://www.startrek.com/">Star Trek</a>,
+            &copy;1966-2019 CBS Studios, Inc. and
+            <a href="https://www.paramount.com">Paramount Pictures</a>
+        </p>
+    </div>
+</EditForm>
+
+
+@foreach (string message in messages)
+{
+    <p class="text-info">@message</p>
+}
+
+<div class="m-4 p-4 h-100 border border-success">
+    <p>Result</p>
+    <p>@nameof(starship.Identifier):@starship.Identifier</p>
+    <p>@nameof(starship.Description):@starship.Description</p>
+    <p>@nameof(starship.Classification):@starship.Classification</p>
+    <p>@nameof(starship.MaximumAccommodation):@starship.MaximumAccommodation</p>
+    <p>@nameof(starship.IsValidatedDesign):@starship.IsValidatedDesign</p>
+    <p>@nameof(starship.ProductionDate):@starship.ProductionDate.ToShortDateString()</p>
+    <p>@nameof(starship.ProductionDate):@starship.ProductionDate</p>
+</div>
+
+@code {
+    private ExampleModel starship = new() { ProductionDate = DateTime.UtcNow };
+    private IList<string> messages = new List<string>();
+
+    private void HandleValidSubmit()
+    {
+        messages.Add("HandleValidSubmit called");
+    }
+}

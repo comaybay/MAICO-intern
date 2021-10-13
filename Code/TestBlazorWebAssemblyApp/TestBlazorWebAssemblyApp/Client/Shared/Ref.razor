@@ -1,0 +1,23 @@
+﻿
+<div class="card">
+    <div class="card-body">
+        <h5>Ref</h5>
+        <h4>@num</h4>
+        <button @onclick="Increase">Increase</button>
+    </div>
+</div>
+
+@code {
+    private int num = 1;
+
+    public void Increase()
+    {
+        num++;
+    }
+
+    public void IncreaseWithStateHasChanged()
+    {
+        Increase();
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,27 @@
+﻿@page "/overwritten-parameters"
+
+<a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/components/?view=aspnetcore-5.0#overwritten-parameters-1">https://docs.microsoft.com/en-us/aspnet/core/blazor/components/?view=aspnetcore-5.0#overwritten-parameters-1</a>
+<h3>Expander không phụ thuộc vào parent của nó (không render dù parameter thay đổi)</h3>
+
+<Expander Expanded="@toggle">
+    <h3>hey!</h3>
+    <h3>ho!</h3>
+    <h3>hey!</h3>
+</Expander>
+
+<Expander Expanded="@toggle" />
+
+<button @onclick="StateHasChanged">
+    Call StateHasChanged
+</button>
+
+<button @onclick="ToggleExpander">
+    Toggle
+</button>
+
+
+@code {
+    private bool toggle = true;
+
+    private void ToggleExpander() => toggle = !toggle;
+}

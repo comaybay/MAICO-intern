@@ -1,0 +1,68 @@
+﻿@page "/cancel-background-work"
+@using System.Threading
+@using Microsoft.Extensions.Logging
+@implements IDisposable
+
+<button @onclick="LongRunningWork">Trigger long running work</button>
+<button @onclick="Dispose">Trigger Disposal</button>
+
+@foreach (string message in messages)
+{
+    <h5>@message</h5>
+}
+
+@code {
+    private IList<string> messages = new List<string>();
+    private Resource resource = new();
+    private CancellationTokenSource cts = new();
+
+    protected async Task LongRunningWork()
+    {
+        messages.Add("Long running work started");
+
+        try
+        {
+            await Task.Delay(1000, cts.Token);
+
+            cts.Token.ThrowIfCancellationRequested();
+            resource.BackgroundResourceMethod(messages);
+        }
+        catch
+        {
+            messages.Add("Exception!");
+        }
+    }
+
+    public void Dispose()
+    {
+        messages.Add("Executing Dispose");
+        cts.Cancel();
+        cts.Dispose();
+        resource?.Dispose();
+    }
+
+    private class Resource : IDisposable
+    {
+        private bool disposed;
+
+        public void BackgroundResourceMethod(IList<string> messages)
+        {
+            messages.Add("BackgroundResourceMethod: Start method");
+
+            if (disposed)
+            {
+                messages.Add("BackgroundResourceMethod: Disposed");
+                throw new ObjectDisposedException(nameof(Resource));
+            }
+
+            // Take action on the Resource
+
+            messages.Add("BackgroundResourceMethod: Action on Resource");
+        }
+
+        public void Dispose()
+        {
+            disposed = true;
+        }
+    }
+}

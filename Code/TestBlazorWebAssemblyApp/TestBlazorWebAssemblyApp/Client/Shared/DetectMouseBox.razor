@@ -1,0 +1,9 @@
+﻿
+<div class="m-4 p-2 w-50 h-50 bg-info text-dark" @onmousemove="OnMouseMoveCallBack">
+    <h3>DetectMouseBox</h3>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnMouseMoveCallBack { get; set; }
+}

@@ -1,0 +1,26 @@
+﻿<h3>
+    <span class="text-danger">@Name</span> is <span class="text-info">@name</span>
+    @if (Name == name)
+    {
+        <span class="text-success"> ( Đúng )</span>
+    }
+    else
+    {
+        <span class="text-danger"> ( Sai )</span>
+    }
+
+
+</h3>
+
+@code {
+
+    [Parameter]
+    public string Name { get; set; }
+
+    private string name;
+
+    protected override void OnInitialized()
+    {
+        name = Name;
+    }
+}

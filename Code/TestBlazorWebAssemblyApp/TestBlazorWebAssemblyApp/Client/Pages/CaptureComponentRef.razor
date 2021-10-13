@@ -1,0 +1,17 @@
+﻿@page "/capture-component-ref"
+
+<a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/components/?view=aspnetcore-5.0#capture-references-to-components-1">https://docs.microsoft.com/en-us/aspnet/core/blazor/components/?view=aspnetcore-5.0#capture-references-to-components-1</a>
+<h4>Rất lạ, gọi phương thức từ component không rerender component đó...</h4>
+<a href="https://github.com/dotnet/aspnetcore/issues/14715">Đây là tính năng????</a>
+
+<Ref @ref="refComponent" />
+
+<button @onclick="Increase">Increase (ref component không gọi StateHasChanged)</button>
+<button @onclick="IncreaseWithStateHasChanged">Increase nhưng ref component sẽ gọi StateHasChanged</button>
+
+@code {
+    private Ref refComponent;
+
+    private void Increase() => refComponent.Increase();
+    private void IncreaseWithStateHasChanged() => refComponent.IncreaseWithStateHasChanged();
+}

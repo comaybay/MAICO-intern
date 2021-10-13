@@ -1,0 +1,15 @@
+﻿@page "/binding"
+
+<div class="p-2 border border-info">
+    <h3 class="text-info">Parent</h3>
+    <input type="date" @bind="date" />
+
+    <Child @bind-Date="date" />
+
+    @date
+</div>
+
+
+@code {
+    private DateTime date = DateTime.Parse("9/9/2009");
+}

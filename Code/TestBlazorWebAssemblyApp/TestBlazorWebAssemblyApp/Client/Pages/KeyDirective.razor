@@ -1,0 +1,52 @@
+﻿@page "/key-directive"
+
+<h3>Text màu đỏ là giá trị được đưa vào parameter</h3>
+
+<div class="card">
+    <h4>List without @("@key")</h4>
+    <div class="card-body ">
+        @foreach (var fruit in fruits)
+        {
+            <Thing Name="@fruit.Name" />
+        }
+    </div>
+</div>
+
+<div class="card">
+    <h4>List with @("@key")</h4>
+    <div class="card-body ">
+        @foreach (var fruit in fruits)
+        {
+            <Thing @key="@fruit" Name="@fruit.Name" />
+        }
+    </div>
+</div>
+
+<button @onclick="(() => {
+                  if (fruits.Count > 0)
+                      fruits.RemoveAt(0);
+                  })">
+    Remove Item
+</button>
+
+@code {
+    private List<Fruit> fruits = new()
+    {
+            new Fruit("Apple"),
+            new Fruit("Orange"),
+            new Fruit("Mango"),
+            new Fruit("Banana"),
+            new Fruit("Grape"),
+        };
+
+
+    public class Fruit
+    {
+        public string Name { get; set; }
+
+        public Fruit(string name)
+        {
+            Name = name;
+        }
+    }
+}

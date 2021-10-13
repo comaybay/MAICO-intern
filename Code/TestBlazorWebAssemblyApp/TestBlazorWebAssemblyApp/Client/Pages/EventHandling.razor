@@ -1,0 +1,11 @@
+﻿@page "/event-handling"
+
+<DetectMouseBox OnMouseMoveCallBack=@((e) => coord = (e.ClientX, e.ClientY)) />
+
+<h4 class="text-success">
+    Coord: @coord.x, @coord.y
+</h4>
+
+@code {
+    private (double x, double y) coord;
+}

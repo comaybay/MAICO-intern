@@ -1,0 +1,28 @@
+﻿@page "/templated-component"
+
+<TableTemplate Items="Pets">
+    <TableHeader>
+        <h3>Pet Options</h3>
+    </TableHeader>
+    <RowTemplate Context="pet">
+        <h4 class="text-success">@pet</h4>
+        <h4 class="text-warning">@pet.Id</h4>
+        <h4 class="text-info">@pet.Name</h4>
+    </RowTemplate>
+</TableTemplate>
+
+@code {
+    private List<Pet> Pets = new List<Pet>() {
+        new Pet() {Id = 1, Name = "Dog" },
+        new Pet() {Id = 2, Name ="Cat" },
+        new Pet() {Id = 3, Name = "Rat" },
+        new Pet() {Id = 4, Name = "Monke" }
+    };
+
+    public class Pet
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}
+
