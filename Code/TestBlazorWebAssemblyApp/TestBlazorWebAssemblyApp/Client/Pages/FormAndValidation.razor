@@ -6,13 +6,15 @@
         <p>
             <label>
                 Identifier:
-                <InputText @bind-Value="starship.Identifier" />
+                <CustomInputText @bind-Value="starship.Identifier" />
+                <ValidationMessage For="() => starship.Identifier" />
             </label>
         </p>
         <p>
             <label>
                 Description (optional):
                 <InputTextArea @bind-Value="starship.Description" />
+                <ValidationMessage For="() => starship.Description" />
             </label>
         </p>
         <p>
@@ -24,24 +26,31 @@
                     <option value="Diplomacy">Diplomacy</option>
                     <option value="Defense">Defense</option>
                 </InputSelect>
+                <ValidationMessage For="() => starship.Classification" />
             </label>
         </p>
         <p>
             <label>
                 Maximum Accommodation:
-                <InputNumber @bind-Value="starship.MaximumAccommodation" />
+                <InputNumber @bind-Value="starship.MaximumAccommodation"
+                             ParsingErrorMessage="MaximumAccommodation Phải là số" />
+                <ValidationMessage For="() => starship.MaximumAccommodation" />
             </label>
         </p>
         <p>
             <label>
                 Engineering Approval:
                 <InputCheckbox @bind-Value="starship.IsValidatedDesign" />
+                <ValidationMessage For="() => starship.IsValidatedDesign" />
             </label>
         </p>
         <p>
             <label>
                 Production Date:
-                <InputDate @bind-Value="starship.ProductionDate" DisplayName="Production Date" />
+                <InputDate @bind-Value="starship.ProductionDate"
+                           DisplayName="Production Date"
+                           ParsingErrorMessage="Trường {0} không hợp lệ" />
+                <ValidationMessage For="() => starship.ProductionDate" />
             </label>
         </p>
 
@@ -83,4 +92,6 @@
     {
         messages.Add("HandleValidSubmit called");
     }
+
 }
+

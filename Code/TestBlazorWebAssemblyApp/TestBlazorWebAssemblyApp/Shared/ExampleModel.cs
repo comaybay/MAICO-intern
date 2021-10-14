@@ -9,7 +9,7 @@ namespace TestBlazorWebAssemblyApp.Shared
 {
     public class ExampleModel
     {
-        [Required]
+        [Required(ErrorMessage = "Trường Identifier là bắt buộc")]
         [StringLength(16, ErrorMessage = "Identifier too long (16 character limit).")]
         public string Identifier { get; set; }
 
@@ -26,7 +26,7 @@ namespace TestBlazorWebAssemblyApp.Shared
             ErrorMessage = "This form disallows unapproved ships.")]
         public bool IsValidatedDesign { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Trường Production Date là bắt buộc")]
         public DateTime ProductionDate { get; set; }
     }
 }
