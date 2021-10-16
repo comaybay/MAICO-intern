@@ -1,0 +1,112 @@
+﻿@page "/checking-out-stuff"
+@using System.ComponentModel.DataAnnotations
+
+
+<MudText Typo="Typo.h4">Checking This Shit Out</MudText>
+
+<MudAlert Severity="Severity.Normal" Variant="Variant.Text" Square="true">The reactor type is RBMK-1000</MudAlert>
+<MudAlert Severity="Severity.Info" Variant="Variant.Outlined">The reactor was fired up successfully</MudAlert>
+<MudAlert Severity="Severity.Success" Variant="Variant.Filled" ContentAlignment="HorizontalAlignment.Center">The reactor is running at optimum temperature</MudAlert>
+<MudAlert Severity="Severity.Warning" Dense="true" ContentAlignment="HorizontalAlignment.Right">The reactor temperature exceeds the optimal range</MudAlert>
+<MudAlert Severity="Severity.Error" NoIcon="true" Elevation="4">Meltdown is imminent</MudAlert>
+
+<MudAvatar Image="_content/MudBlazor.Docs/images/mony.png" />
+<MudAvatar Color="Color.Primary">Mud man</MudAvatar>
+
+<MudBadge Content="3" Color="Color.Primary" Overlap="true" Class="mx-6 my-4">
+    <MudIcon Icon="@Icons.Material.Filled.Email" Color="Color.Default" />
+</MudBadge>
+
+<MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" EndIcon="@Icons.Material.Filled.SafetyDivider" Color="Color.Error">Delete</MudButton>
+
+<MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.Add" aria-label="add" />
+<MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.Minimize" aria-label="add" Label="Minimize" Class="ma-4" />
+
+<MudPaper Height="400px" Width="100%" Class="mud-theme-primary">
+    <MudText>Fluid.</MudText>
+    <MudContainer MaxWidth="MaxWidth.Small" Style=@($"background-color:{Colors.Amber.Accent1}")>
+        <MudText>MudContainer - A simple component to center content. Choose between fluid or fixed.</MudText>
+        <MudPaper Height="200px" Width="100%" Square="true" Class="mud-info"></MudPaper>
+        <MudText Color="Color.Primary">MudContainer - A simple component to center content. Choose between fluid or fixed.</MudText>
+    </MudContainer>
+</MudPaper>
+
+<MudPaper Height="400px" Width="100%" Class="mud-info mt-6">
+    <MudText>Fixed.</MudText>
+    <MudContainer Fixed="true" Class="mud-danger" Style=@($"background-color:{Colors.Amber.Accent1}")>
+        <MudText>MudContainer - A simple component to center content. Choose between fluid or fixed.</MudText>
+        <MudPaper Height="200px" Width="100%" Square="true" Class="mud-theme-primary"></MudPaper>
+        <MudText Color="Color.Primary">MudContainer - A simple component to center content. Choose between fluid or fixed.</MudText>
+    </MudContainer>
+</MudPaper>
+
+<MudPaper Width="400px">
+    <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="First name" HelperText="Max. 8 characters"
+                              @bind-Value="model.Username" For="@(() => model.Username)" />
+                <MudTextField Label="Email" Class="mt-3"
+                              @bind-Value="model.Email" For="@(() => model.Email)" />
+                <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                              @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+                <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                              @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password" />
+
+                <MudDatePicker Label="Date" @bind-Date="model.Date" For="@(() => model.Date)" />
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+            </MudCardActions>
+        </MudCard>
+        <MudText Typo="Typo.body2" Align="Align.Center" Class="my-4">
+            Fill out the form correctly to see the success message.
+        </MudText>
+
+        <MudExpansionPanels>
+            <MudExpansionPanel Text="Show Validation Summary">
+                @if (success)
+                {
+<MudText Color="Color.Success">Success</MudText> }
+else
+{
+<MudText Color="@Color.Error">
+    <ValidationSummary />
+</MudText>}
+            </MudExpansionPanel>
+        </MudExpansionPanels>
+    </EditForm>
+</MudPaper>
+
+@code { RegisterAccountForm model = new RegisterAccountForm();
+    bool success;
+
+    public class RegisterAccountForm
+    {
+        [Required]
+        [StringLength(8, ErrorMessage = "Name length can't be more than 8.")]
+        public string Username { get; set; }
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+        public string Password { get; set; }
+
+        [Required]
+        [Compare(nameof(Password))]
+        public string Password2 { get; set; }
+
+        [Required]
+        public DateTime? Date { get; set; }
+
+    }
+
+    private void OnValidSubmit(EditContext context)
+    {
+        success = true;
+        StateHasChanged();
+    } }

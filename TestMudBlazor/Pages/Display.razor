@@ -1,0 +1,28 @@
+﻿@page "/display"
+
+<MudPaper Elevation="0" Class="pa-4 mud-theme-info" Style="height:100px; width:180px;">
+    <div class="d-none d-lg-block mud-theme-tertiary rounded" style="height:100%; width:100%;"></div>
+</MudPaper>
+
+<MudPaper Class="pa-lg-6 mud-theme-secondary">
+    <MudText Typo="Typo.body1" Class="mx-lg-auto d-lg-inline-block">Adjust screen size to see the changes.</MudText>
+</MudPaper>
+
+<MudPaper Width="300px" Square="true">
+    <MudList>
+        <MudListItem Avatar="@Icons.Material.Filled.TrendingUp">
+            Trending
+        </MudListItem>
+        <MudDivider DividerType="DividerType.Inset" />
+        <MudListItem Avatar="@Icons.Material.Filled.StarRate">
+            Most Stars
+        </MudListItem>
+        <MudDivider DividerType="DividerType.Inset" />
+        <MudListItem Avatar="@Icons.Material.Filled.History">
+            History
+        </MudListItem>
+    </MudList>
+</MudPaper>
+@code {
+
+}
