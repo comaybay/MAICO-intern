@@ -1,0 +1,226 @@
+﻿@page "/products"
+@inject ProductService ProductService;
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<MudGrid Class="mb-4">
+    <MudItem xs="6">
+        <MudPaper Elevation="2" Class="pa-6" @onclick="() => _addSuccess = false">
+            <EditForm Model="@_newProduct" OnValidSubmit="OnValidSubmitAdd">
+                <DataAnnotationsValidator />
+
+                <div class="d-flex flex-row align-center pb-2">
+                    <MudIcon Icon="@Icons.Material.Filled.Add" />
+                    <MudText Typo="Typo.h4">Add New Product</MudText>
+                </div>
+
+                <MudTextField Required="true" Class="pb-2" Label="Name" @bind-Value="@_newProduct.Name" For="() => _newProduct.Name" />
+                <MudTextField Required="true" Class="pb-2" Label="Price" @bind-Value="@_newProduct.Price" For="() => _newProduct.Price" />
+
+                <CustomValidation @ref="_customValidationAdd" />
+
+                <MudButton Class="pb-2" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Add</MudButton>
+
+                @if (_addSuccess)
+                {
+                    <div class="d-flex flex-row">
+                        <MudIcon Color="Color.Success" Icon="@Icons.Material.Filled.Check" />
+                        <MudText Color="Color.Success">Added successfully!</MudText>
+                    </div>
+                }
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="6">
+        @{
+            bool disabled = _editProductChanges.Id == 0;
+            void RemoveMessage() => _editSuccess = false;
+        }
+        <MudPaper Elevation="2" Class="pa-6" @onclick="RemoveMessage">
+            <span @ref="_elemToScrollTo"></span>
+            <EditForm Model="@_editProductChanges" OnValidSubmit="OnValidSubmitEdit">
+                <DataAnnotationsValidator />
+
+                <div class="d-flex flex-row align-center pb-2">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" />
+                    <MudText Typo="Typo.h4">Edit Product</MudText>
+                </div>
+
+
+                @if (!disabled)
+                {
+                    <MudText>Id: @_editProductChanges.Id</MudText>
+                }
+
+                <MudTextField @ref="_editTextFieldProductName" Class="pb-2" Disabled="disabled" Label="Name"
+                              @bind-Value="@_editProductChanges.Name" For="() => _editProductChanges.Name" />
+
+                <MudTextField Class="pb-2" Disabled="disabled" Label="Price" @bind-Value="@_editProductChanges.Price" For="() => _editProductChanges.Price" />
+
+                <CustomValidation @ref="_customValidationEdit" />
+
+                <MudButton @onblur="RemoveMessage" Class="pb-2" Disabled="disabled" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Edit</MudButton>
+
+                @if (_editSuccess)
+                {
+                    <div class="d-flex flex-row align-center">
+                        <MudIcon Color="Color.Success" Icon="@Icons.Material.Filled.Check" />
+                        <MudText Color="Color.Success">Edited successfully!</MudText>
+                    </div>
+                }
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudText Typo="Typo.h2">All Products</MudText>
+<MudGrid>
+    @for (int i = 0; i < _products.Length; i++)
+    {
+        var product = _products[i];
+
+        <MudItem xs="3">
+            <MudCard @key="product.Id" Elevation="2" Class="mb-2">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">@product.Name</MudText>
+                        <MudDivider />
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => RemoveProduct(product.Id)" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default" OnClick="() => OnClickEditProduct(product)" />
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText Typo=" Typo.body2">
+                        Product Id: @product.Id
+                    </MudText>
+                    <MudText>Price: @($"{product.Price}$")</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    }
+</MudGrid>
+
+
+@code {
+    private IJSObjectReference _module;
+
+    private Product[] _products = new Product[] { };
+
+    private Product _newProduct = new Product();
+
+    private Product _editProduct = null;
+
+    private Product _editProductChanges = new Product();
+
+    private CustomValidation _customValidationAdd;
+
+    private CustomValidation _customValidationEdit;
+
+    private MudTextField<string> _editTextFieldProductName;
+
+    private ElementReference _elemToScrollTo;
+
+    private bool _addSuccess = false;
+
+    private bool _editSuccess = false;
+
+    private bool _focusEdit = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _products = await ProductService.GetAllProductsAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./helper.js");
+
+        if (_focusEdit)
+        {
+            _focusEdit = false;
+            await _editTextFieldProductName.FocusAsync();
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_module != null)
+            await _module.DisposeAsync();
+    }
+
+    private async Task OnValidSubmitAdd(EditContext editContext)
+    {
+        _customValidationAdd.ClearErrors();
+
+        var result = await ProductService.AddNewProduct(_newProduct);
+
+        if (result.Success)
+        {
+            _newProduct = new Product();
+            _addSuccess = true;
+            _products = await ProductService.GetAllProductsAsync();
+            return;
+        }
+
+        _customValidationAdd.DisplayErrors(result.Errors);
+    }
+
+
+    private async Task OnValidSubmitEdit(EditContext editContext)
+    {
+        _customValidationEdit.ClearErrors();
+
+        if (_editProductChanges.Name == _editProduct.Name && _editProductChanges.Price == _editProduct.Price)
+            return;
+
+        var result = await ProductService.EditProduct(_editProductChanges);
+
+        if (result.Success)
+        {
+            _editSuccess = true;
+
+            _editProduct = new Product()
+            {
+                Id = _editProductChanges.Id,
+                Name = _editProductChanges.Name,
+                Price = _editProductChanges.Price
+            };
+
+            _products = await ProductService.GetAllProductsAsync();
+            return;
+        }
+
+        _customValidationEdit.DisplayErrors(result.Errors);
+    }
+
+    private async Task RemoveProduct(int productId)
+    {
+        await ProductService.RemoveProduct(productId);
+
+        if (_editProduct?.Id == productId)
+        {
+            _editProduct = null;
+            _editProductChanges = new Product();
+        }
+
+        _products = await ProductService.GetAllProductsAsync();
+    }
+
+    private async Task OnClickEditProduct(Product product)
+    {
+        _editProduct = product;
+        _editProductChanges = new Product()
+        {
+            Id = _editProduct.Id,
+            Name = _editProduct.Name,
+            Price = _editProduct.Price
+        };
+
+        _focusEdit = true;
+        await _module.InvokeVoidAsync("scrollIntoView", _elemToScrollTo);
+    }
+}
