@@ -237,7 +237,7 @@ Hiện danh sách các bài viết của nhiều người dùng khác nhau.
 
 ## Cơ sở dữ liệu
 
-<img src="./ERD.png" alt="ERD"  height="900">
+![ERD](./ERD.png)
 
 ### Bảng Users:
 
