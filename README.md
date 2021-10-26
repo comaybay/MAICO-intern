@@ -203,7 +203,7 @@ Hiện danh sách các bài viết của nhiều người dùng khác nhau.
 
 ### Đánh giá sao bài viết:
 
-> Khi một người dùng muốn bày tỏ rằng một bài viết chia sẽ nào đó là hữu ích, đúng hay đồng cảm nghĩ, ... Thì người dùng đó có thể đánh giá sao lên bài viết đó đó.
+> Khi một người dùng muốn bày tỏ rằng một bài viết chia sẻ nào đó là hữu ích, đúng hay đồng cảm nghĩ, ... Thì người dùng đó có thể đánh giá sao lên bài viết đó đó.
 
 1. Nếu người dùng là [người dùng chưa đăng nhập](#người-dùng-chưa-đăng-nhập): không cho phép đánh giá sao bài viết.
 
@@ -262,7 +262,7 @@ Khóa chính: Id
 
 Bảng chứa các cột `bài viết`:
 
-Cột `bài viết`: Chứa nội dung bài viết và các thông tin liên quan đến bài viết chia sẽ đó.
+Cột `bài viết`: Chứa nội dung bài viết và các thông tin liên quan đến bài viết chia sẻ đó.
 
 ![Bảng Posts](./Posts.png)
 
